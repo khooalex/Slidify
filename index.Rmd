@@ -1,0 +1,76 @@
+---
+title       : Intercept and slope of Linear Regression
+subtitle    : The relation of intercept, slope and mean of data
+author      : Helen Gu, Teacher of Shanghai Sports Institute
+job         : Shanghai Sports Institute
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : [mathjax]     # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+## Summary of the Problem
+Suppose we have data of x and y. Are the following two linear regression the same?
+
+Case 1
+
+lm(I(y - mean(y)) ~ I(x - mean(x)) - 1)
+
+Case 2
+
+X1 <- (x - mean(x))/sd(x)
+
+Y1 <- (y - mean(y))/sd(y)
+
+lm(Y1 ~ X1)
+
+---
+## Example1
+```{r, echo=FALSE}
+set.seed(3)
+```
+```{r, echo=TRUE}
+x=c(1:10)
+y=1+5*runif(10)+x
+```
+```{r, echo=FALSE, fig.height=6.2, fig.width=6}
+plot(y-mean(y), x-mean(x), col="orange", main="Example1")
+M1<-lm(I(y - mean(y)) ~ I(x-mean(x))  -1 )
+abline(M1,col= "pink")
+X1 <- (x - mean(x))/sd(x)
+Y1 <- (y - mean(y))/sd(y)
+points(Y1,X1, col= "blue")
+M2<-lm(Y1~X1)
+abline(M2,col= "purple")
+legend("topright", lty=1, col=c("pink","purple"), legend=c("lm((y-mean(y))~(x-mean(x))-1)", "lm(Y1~X1)"))
+```
+
+---
+## Example2
+```{r, echo=FALSE}
+set.seed(3)
+```
+```{r, echo=TRUE}
+x=c(1:10)
+y=1+10*runif(10)+x
+```
+```{r, echo=FALSE, fig.height=6.2, fig.width=6}
+plot(y-mean(y), x-mean(x), col="orange", main="Example2")
+M1<-lm(I(y - mean(y)) ~ I(x-mean(x))  -1 )
+abline(M1,col= "red")
+X1 <- (x - mean(x))/sd(x)
+Y1 <- (y - mean(y))/sd(y)
+points(Y1,X1, col= "blue")
+M2<-lm(Y1~X1)
+abline(M2,col= "navy")
+legend("topright", lty=1, col=c("red","navy"), legend=c("lm((y-mean(y))~(x-mean(x))-1)", "lm(Y1~X1)"))
+```
+
+---
+## Conclusion
+From the Examples, 
+- the intercept of two cases are the same, they all equal 0.
+
+- the slope of two cases are different. The difference is depend on sd(x)/sd(y). Because relation of the slope of case 2 ($k_{2}$) and case 1 ($k_{1}$) is $k_{2}$=$\frac{sd(x)}{sd(y)}\times$$k_{1}$.
+
